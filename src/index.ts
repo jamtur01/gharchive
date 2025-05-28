@@ -8,39 +8,19 @@
  */
 
 import { Command } from "commander";
-import { Octokit } from "octokit";
 import inquirer from "inquirer";
 import dotenv from "dotenv";
-
-// Define types
-interface Repository {
-  name: string;
-  full_name: string;
-  private: boolean;
-  html_url: string;
-  description: string | null;
-  fork: boolean;
-  created_at: string;
-  updated_at: string;
-  pushed_at: string;
-  stargazers_count: number;
-  language: string | null;
-  archived: boolean;
-}
-
-interface OperationResult {
-  name: string;
-  success: boolean;
-  error?: unknown;
-}
+import {
+  Repository,
+  OperationResult,
+  fetchAllRepositories,
+  fetchForkRepositories,
+  archiveRepositories,
+  deleteRepositories
+} from "./repository-functions";
 
 // Load environment variables
 dotenv.config();
-
-// Initialize GitHub API client
-const octokit = new Octokit({
-  auth: process.env.GITHUB_TOKEN,
-});
 
 const program = new Command();
 
@@ -230,55 +210,6 @@ program
     }
   });
 
-// Fetch all repositories for a user (excluding forks)
-async function fetchAllRepositories(username: string): Promise<Repository[]> {
-  const repos = [];
-  let page = 1;
-  let hasNextPage = true;
-
-  while (hasNextPage) {
-    const response = await octokit.rest.repos.listForUser({
-      username,
-      per_page: 100,
-      page,
-      sort: "updated",
-      direction: "desc",
-    });
-
-    repos.push(...response.data);
-
-    hasNextPage = response.data.length === 100;
-    page++;
-  }
-
-  // Filter out archived repositories and forks
-  return repos.filter((repo) => !repo.archived && !repo.fork);
-}
-
-// Fetch all fork repositories for a user
-async function fetchForkRepositories(username: string): Promise<Repository[]> {
-  const repos = [];
-  let page = 1;
-  let hasNextPage = true;
-
-  while (hasNextPage) {
-    const response = await octokit.rest.repos.listForUser({
-      username,
-      per_page: 100,
-      page,
-      sort: "updated",
-      direction: "desc",
-    });
-
-    repos.push(...response.data);
-
-    hasNextPage = response.data.length === 100;
-    page++;
-  }
-
-  // Filter to include only forks that are not archived
-  return repos.filter((repo) => repo.fork && !repo.archived);
-}
 
 // Let user select repositories to archive or delete
 async function selectRepositories(repos: Repository[], message: string = "Select repositories to archive:"): Promise<string[]> {
@@ -301,72 +232,6 @@ async function selectRepositories(repos: Repository[], message: string = "Select
   return selectedRepos;
 }
 
-// Archive selected repositories
-async function archiveRepositories(
-  owner: string,
-  repoNames: string[]
-): Promise<OperationResult[]> {
-  console.log("\nStarting archiving process...");
-  console.log("-----------------------------");
-
-  const results = [];
-
-  for (const repoName of repoNames) {
-    try {
-      process.stdout.write(`Archiving ${repoName}... `);
-
-      await octokit.rest.repos.update({
-        owner,
-        repo: repoName,
-        archived: true,
-      });
-
-      console.log("✅ Success");
-      results.push({ name: repoName, success: true });
-    } catch (error) {
-      console.log("❌ Failed");
-      console.error(
-        `   Error: ${error instanceof Error ? error.message : String(error)}`
-      );
-      results.push({ name: repoName, success: false, error });
-    }
-  }
-
-  return results;
-}
-
-// Delete selected repositories
-async function deleteRepositories(
-  owner: string,
-  repoNames: string[]
-): Promise<OperationResult[]> {
-  console.log("\nStarting deletion process...");
-  console.log("---------------------------");
-
-  const results = [];
-
-  for (const repoName of repoNames) {
-    try {
-      process.stdout.write(`Deleting ${repoName}... `);
-
-      await octokit.rest.repos.delete({
-        owner,
-        repo: repoName,
-      });
-
-      console.log("✅ Success");
-      results.push({ name: repoName, success: true });
-    } catch (error) {
-      console.log("❌ Failed");
-      console.error(
-        `   Error: ${error instanceof Error ? error.message : String(error)}`
-      );
-      results.push({ name: repoName, success: false, error });
-    }
-  }
-
-  return results;
-}
 
 // Command to delete fork repositories
 program

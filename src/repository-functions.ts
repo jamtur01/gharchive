@@ -22,6 +22,15 @@ export interface OperationResult {
   error?: unknown;
 }
 
+// Used to control logging behavior during tests
+export interface LogOptions {
+  quiet?: boolean;
+}
+
+const defaultLogOptions: LogOptions = {
+  quiet: false
+};
+
 // Initialize GitHub API client
 const getOctokit = (): Octokit => {
   return new Octokit({
@@ -84,17 +93,24 @@ export async function fetchForkRepositories(username: string): Promise<Repositor
 // Archive selected repositories
 export async function archiveRepositories(
   owner: string,
-  repoNames: string[]
+  repoNames: string[],
+  options: LogOptions = defaultLogOptions
 ): Promise<OperationResult[]> {
   const octokit = getOctokit();
-  console.log("\nStarting archiving process...");
-  console.log("-----------------------------");
+  const { quiet } = options;
+  
+  if (!quiet) {
+    console.log("\nStarting archiving process...");
+    console.log("-----------------------------");
+  }
 
   const results = [];
 
   for (const repoName of repoNames) {
     try {
-      process.stdout.write(`Archiving ${repoName}... `);
+      if (!quiet) {
+        process.stdout.write(`Archiving ${repoName}... `);
+      }
 
       await octokit.rest.repos.update({
         owner,
@@ -102,13 +118,17 @@ export async function archiveRepositories(
         archived: true,
       });
 
-      console.log("✅ Success");
+      if (!quiet) {
+        console.log("✅ Success");
+      }
       results.push({ name: repoName, success: true });
     } catch (error) {
-      console.log("❌ Failed");
-      console.error(
-        `   Error: ${error instanceof Error ? error.message : String(error)}`
-      );
+      if (!quiet) {
+        console.log("❌ Failed");
+        console.error(
+          `   Error: ${error instanceof Error ? error.message : String(error)}`
+        );
+      }
       results.push({ name: repoName, success: false, error });
     }
   }
@@ -119,30 +139,41 @@ export async function archiveRepositories(
 // Delete selected repositories
 export async function deleteRepositories(
   owner: string,
-  repoNames: string[]
+  repoNames: string[],
+  options: LogOptions = defaultLogOptions
 ): Promise<OperationResult[]> {
   const octokit = getOctokit();
-  console.log("\nStarting deletion process...");
-  console.log("---------------------------");
+  const { quiet } = options;
+  
+  if (!quiet) {
+    console.log("\nStarting deletion process...");
+    console.log("---------------------------");
+  }
 
   const results = [];
 
   for (const repoName of repoNames) {
     try {
-      process.stdout.write(`Deleting ${repoName}... `);
+      if (!quiet) {
+        process.stdout.write(`Deleting ${repoName}... `);
+      }
 
       await octokit.rest.repos.delete({
         owner,
         repo: repoName,
       });
 
-      console.log("✅ Success");
+      if (!quiet) {
+        console.log("✅ Success");
+      }
       results.push({ name: repoName, success: true });
     } catch (error) {
-      console.log("❌ Failed");
-      console.error(
-        `   Error: ${error instanceof Error ? error.message : String(error)}`
-      );
+      if (!quiet) {
+        console.log("❌ Failed");
+        console.error(
+          `   Error: ${error instanceof Error ? error.message : String(error)}`
+        );
+      }
       results.push({ name: repoName, success: false, error });
     }
   }

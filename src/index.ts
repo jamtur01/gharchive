@@ -191,7 +191,7 @@ program
       }
 
       // Archive selected repositories
-      const results = await archiveRepositories(username, selectedRepos);
+      const results = await archiveRepositories(username, selectedRepos, { quiet: false });
 
       // Display summary
       const successful = results.filter((r) => r.success).length;
@@ -289,7 +289,7 @@ program
       }
 
       // Delete selected repositories
-      const results = await deleteRepositories(username, selectedRepos);
+      const results = await deleteRepositories(username, selectedRepos, { quiet: false });
 
       // Display summary
       const successful = results.filter((r) => r.success).length;

@@ -4,7 +4,7 @@
  * A CLI tool to archive GitHub repositories
  *
  * Copyright (c) 2025 James Turnbull <james@ltl.so>
- * Licensed under the ISC License
+ * Licensed under the MIT License
  */
 
 import { Command } from 'commander';

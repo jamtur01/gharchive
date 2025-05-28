@@ -2,8 +2,6 @@
 
 A command-line tool that allows you to easily archive multiple GitHub repositories at once.
 
-Copyright (c) 2025 James Turnbull <james@ltl.so>
-
 ## Features
 
 - List all repositories created by a specific GitHub user (excludes forks)
@@ -17,17 +15,20 @@ Copyright (c) 2025 James Turnbull <james@ltl.so>
 ## Installation
 
 1. Clone this repository:
+
    ```
    git clone https://github.com/jamesturnbull/gharchive.git
    cd gharchive
    ```
 
 2. Install dependencies:
+
    ```
    npm install
    ```
 
 3. Build the project:
+
    ```
    npm run build
    ```
@@ -54,6 +55,7 @@ gharchive archive <username>
 ```
 
 For example:
+
 ```
 gharchive archive octocat
 ```
@@ -63,9 +65,11 @@ gharchive archive octocat
 The tool provides two main commands:
 
 1. **List repositories**:
+
    ```
    gharchive list <username>
    ```
+
    Shows all non-forked repositories for a user with detailed information.
 
 2. **Archive repositories**:
@@ -76,6 +80,7 @@ The tool provides two main commands:
    Use `--force` flag to skip confirmation prompt.
 
 For example:
+
 ```
 gharchive list octocat
 gharchive archive octocat
@@ -83,6 +88,7 @@ gharchive archive octocat --force
 ```
 
 This will:
+
 1. Fetch all non-forked repositories created by the user
 2. Display a checkbox list of repositories with details
 3. Allow you to select repositories to archive
@@ -101,19 +107,8 @@ This project is hosted on GitHub at: https://github.com/jamesturnbull/gharchive
 
 ## License
 
-ISC License
+MIT License
 
 Copyright (c) 2025 James Turnbull <james@ltl.so>
 
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted, provided that the above
-copyright notice and this permission notice appear in all copies.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-
+See the [LICENSE](LICENSE) file for details.

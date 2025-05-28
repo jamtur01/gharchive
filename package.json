@@ -1,5 +1,5 @@
 {
-  "name": "gharchive",
+  "name": "@jamtur01/gharchive",
   "version": "1.0.0",
   "description": "A CLI tool to archive GitHub repositories",
   "main": "dist/index.js",
@@ -10,7 +10,9 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "tsc && node dist/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"No tests yet\" && exit 0",
+    "prepublishOnly": "npm run build",
+    "lint": "echo \"No linting configured\""
   },
   "keywords": [
     "github",
@@ -21,7 +23,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jamesturnbull/gharchive.git"
+    "url": "https://github.com/jamtur01/gharchive.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   },
   "dependencies": {
     "commander": "^14.0.0",

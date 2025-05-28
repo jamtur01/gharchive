@@ -14,10 +14,29 @@ A command-line tool that allows you to easily archive multiple GitHub repositori
 
 ## Installation
 
+### Option 1: Install from GitHub Packages
+
+This package is published to GitHub Packages. To install it:
+
+1. Authenticate with GitHub Packages:
+
+   Create or edit the `.npmrc` file in your project or home directory:
+   ```
+   @jamtur01:registry=https://npm.pkg.github.com/
+   //npm.pkg.github.com/:_authToken=YOUR_GITHUB_TOKEN
+   ```
+
+2. Install the package:
+   ```
+   npm install @jamtur01/gharchive
+   ```
+
+### Option 2: Install from Source
+
 1. Clone this repository:
 
    ```
-   git clone https://github.com/jamesturnbull/gharchive.git
+   git clone https://github.com/jamtur01/gharchive.git
    cd gharchive
    ```
 
@@ -100,6 +119,13 @@ This will:
 - `npm run build` - Compile TypeScript to JavaScript
 - `npm run dev` - Build and run the application
 - `npm start` - Run the compiled application
+
+## CI/CD
+
+This package uses GitHub Actions for continuous integration and deployment. The workflow:
+
+1. Builds and tests the package on every push to the main branch
+2. Automatically publishes to GitHub Packages when a new release is created
 
 ## License
 

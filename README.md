@@ -5,8 +5,10 @@ A command-line tool that allows you to easily archive multiple GitHub repositori
 ## Features
 
 - List all repositories created by a specific GitHub user (excludes forks)
-- Interactive selection interface for choosing which repositories to archive
+- List all fork repositories for a specific GitHub user
+- Interactive selection interface for choosing which repositories to archive or delete
 - Archive multiple repositories in one operation
+- Delete multiple fork repositories in one operation
 - User-friendly CLI interface with detailed repository information
 - Displays repository details including visibility, stars, language, and creation date
 - Skip confirmation with `--force` flag
@@ -81,7 +83,7 @@ gharchive archive octocat
 
 ## Commands
 
-The tool provides two main commands:
+The tool provides four main commands:
 
 1. **List repositories**:
 
@@ -91,28 +93,46 @@ The tool provides two main commands:
 
    Shows all non-forked repositories for a user with detailed information.
 
-2. **Archive repositories**:
+2. **List fork repositories**:
+
+   ```
+   gharchive list-forks <username>
+   ```
+
+   Shows all fork repositories for a user with detailed information.
+
+3. **Archive repositories**:
    ```
    gharchive archive <username>
    ```
    Interactive process to select and archive repositories.
    Use `--force` flag to skip confirmation prompt.
 
+4. **Delete fork repositories**:
+   ```
+   gharchive delete-forks <username>
+   ```
+   Interactive process to select and delete fork repositories.
+   Use `--force` flag to skip confirmation prompt.
+   **Warning**: Deletion cannot be undone.
+
 For example:
 
 ```
 gharchive list octocat
+gharchive list-forks octocat
 gharchive archive octocat
 gharchive archive octocat --force
+gharchive delete-forks octocat
 ```
 
 This will:
 
-1. Fetch all non-forked repositories created by the user
+1. Fetch repositories created by the user (non-forked or forks depending on command)
 2. Display a checkbox list of repositories with details
-3. Allow you to select repositories to archive
-4. Ask for confirmation before archiving (unless using --force)
-5. Archive the selected repositories with detailed status reporting
+3. Allow you to select repositories to archive or delete
+4. Ask for confirmation before proceeding (unless using --force)
+5. Archive or delete the selected repositories with detailed status reporting
 
 ## Development
 
@@ -126,6 +146,10 @@ This package uses GitHub Actions for continuous integration and deployment. The 
 
 1. Builds and tests the package on every push to the main branch
 2. Automatically publishes to GitHub Packages when a new release is created
+
+## Changelog
+
+See the [CHANGELOG.md](CHANGELOG.md) file for details on version history and updates.
 
 ## License
 

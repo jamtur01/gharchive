@@ -145,7 +145,13 @@ This will:
 This package uses GitHub Actions for continuous integration and deployment. The workflow:
 
 1. Builds and tests the package on every push to the main branch
-2. Automatically publishes to GitHub Packages when a new release is created
+2. Automatically creates a release and publishes to GitHub Packages when a new tag is pushed
+
+To create a new release:
+```
+git tag -a v1.1.0 -m "Version 1.1.0"
+git push origin v1.1.0
+```
 
 ## Changelog
 

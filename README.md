@@ -101,10 +101,6 @@ This will:
 - `npm run dev` - Build and run the application
 - `npm start` - Run the compiled application
 
-## Repository
-
-This project is hosted on GitHub at: https://github.com/jamesturnbull/gharchive
-
 ## License
 
 MIT License
